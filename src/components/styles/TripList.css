@@ -19,3 +19,18 @@
 	list-style-type: none;
 	margin: 20px 0;
 }
+
+.trip-list li:hover {
+	transform: translateY(-0.1em);
+}
+
+.trip-list .filters {
+	display: flex;
+	gap: 10px;
+}
+
+.trip-list button {
+	padding: 10px;
+	font-size: 1rem;
+	flex-grow: 1;
+}
