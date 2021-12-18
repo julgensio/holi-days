@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 
 // Styles
 import './styles/TripList.css';
@@ -7,13 +7,19 @@ export default function TripList() {
 	const [trips, setTrips] = useState([]);
 	const [url, setUrl] = useState('http://localhost:3000/trips');
 
+	// * Create cached of fetchTrips for not run again
+	// ! FetchTrips is has a different position in memory thats why it runs multiple times if your new using the usecallback function
+	const fetchTrips = useCallback(async () => {
+		const response = await fetch(url);
+		const json = await response.json();
+		setTrips(json);
+	}, [url]); // * Check if the url is updated
+
 	// * Fetch data when TripList components first runs (use useEffect)
-	// ! function runs at the start and when the dependency [] value changes
+	// ! Function runs at the start and when the dependency [] value changes
 	useEffect(() => {
-		fetch(url)
-			.then((response) => response.json())
-			.then((json) => setTrips(json));
-	}, [url]); // * Rerun the new data
+		fetchTrips();
+	}, [fetchTrips]); // * triggerd when url changes a new fetchTrip function is generated
 	console.log(trips);
 
 	return (
